@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Direktori Pemain · Special Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#07080a; --ink:#101216; --chalk:#f3f1e9; --mute:#8a8f98;
+  --lime:#d6ff2e; --gold:#ffc43a;
+  --display:'Anton','Impact','Arial Narrow Bold',sans-serif;
+  --serif:'Instrument Serif','Georgia',serif;
+  --body:'Space Grotesk','Helvetica Neue',Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--night);color:var(--chalk);font-family:var(--body);min-height:100vh;
+  background-image:
+    radial-gradient(900px 500px at 85% -10%,rgba(214,255,46,.10),transparent 60%),
+    radial-gradient(800px 600px at -10% 40%,rgba(255,196,58,.08),transparent 60%);
+}
+body::after{ /* film grain */
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.07;z-index:50;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+}
+.wrap{max-width:1240px;margin:0 auto;padding:56px 24px 96px}
+
+/* HERO */
+header{position:relative;margin-bottom:56px}
+.mega{
+  font-family:var(--display);text-transform:uppercase;line-height:.84;letter-spacing:-.01em;
+  font-size:clamp(64px,15vw,200px);
+}
+.mega span{display:block}
+.mega .outline{color:transparent;-webkit-text-stroke:2px var(--chalk)}
+.mega .fill{
+  background:linear-gradient(95deg,var(--lime),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;
+  margin-left:clamp(0px,6vw,90px);
+}
+.lede{font-family:var(--serif);font-style:italic;font-size:clamp(20px,2.4vw,28px);color:var(--mute);max-width:520px;margin-top:24px;line-height:1.25}
+.tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:32px}
+.search{
+  background:var(--ink);border:1px solid #23272e;color:var(--chalk);font:inherit;padding:12px 18px;min-width:240px;
+  clip-path:polygon(0 0,100% 0,100% 70%,94% 100%,0 100%);
+}
+.search:focus-visible,.chip:focus-visible,.card:focus-visible,.up:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+.chip{
+  background:transparent;border:1px solid #2a2f37;color:var(--chalk);font:600 14px var(--body);padding:10px 16px;cursor:pointer;
+  clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);transition:.2s;
+}
+.chip:hover{border-color:var(--lime)}
+.chip[aria-pressed="true"]{background:var(--lime);color:#000;border-color:var(--lime)}
+.count{margin-left:auto;color:var(--mute);font-size:14px}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,560px),1fr));gap:28px}
+
+/* CARD */
+.card{
+  --acc:var(--lime);
+  --mx:50%;--my:50%;--rx:0deg;--ry:0deg;
+  position:relative;display:grid;grid-template-columns:44% 1fr;min-height:300px;
+  background:linear-gradient(120deg,#13161b,#0b0d10 70%);
+  border:1px solid #1d2128;
+  clip-path:polygon(0 0,calc(100% - 28px) 0,100% 28px,100% 100%,28px 100%,0 calc(100% - 28px));
+  transform:perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+  transition:transform .25s ease,border-color .25s;
+  cursor:pointer;isolation:isolate;
+}
+a.card{color:inherit;text-decoration:none}
+.card[data-tone="gold"]{--acc:var(--gold)}
+.card::before{ /* cursor spotlight */
+  content:"";position:absolute;inset:0;z-index:0;opacity:0;transition:opacity .3s;
+  background:radial-gradient(360px circle at var(--mx) var(--my),color-mix(in srgb,var(--acc) 22%,transparent),transparent 60%);
+}
+.card:hover::before{opacity:1}
+.card:hover{border-color:var(--acc)}
+
+/* video-frame photo */
+.shot{position:relative;overflow:hidden;z-index:1;margin:14px 0 14px 14px;
+  clip-path:polygon(0 0,100% 0,82% 100%,0 100%);
+  background:
+    linear-gradient(160deg,color-mix(in srgb,var(--acc) 55%,#000),#050607 75%);
+}
+.shot img,.shot video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:contrast(1.1) saturate(1.1);transition:transform .6s ease}
+.shot .sil{position:absolute;inset:auto 0 0 0;width:100%;height:88%;opacity:.9;transition:transform .6s ease}
+.shot .num{
+  position:absolute;right:22%;top:6px;font-family:var(--display);font-size:120px;line-height:1;
+  color:transparent;-webkit-text-stroke:1.5px color-mix(in srgb,var(--acc) 80%,#fff);opacity:.55;
+}
+.card:hover .shot img,.card:hover .shot video,.card:hover .shot .sil{transform:scale(1.07) translateX(4px)}
+.shot::after{ /* scanlines + color grade */
+  content:"";position:absolute;inset:0;pointer-events:none;mix-blend-mode:overlay;
+  background:
+    repeating-linear-gradient(0deg,rgba(255,255,255,.07) 0 1px,transparent 1px 3px),
+    linear-gradient(200deg,transparent 40%,color-mix(in srgb,var(--acc) 50%,transparent));
+}
+.shot .glow{position:absolute;left:-30%;bottom:-30%;width:90%;height:70%;background:var(--acc);filter:blur(60px);opacity:.35;transition:opacity .3s}
+.card:hover .glow{opacity:.65}
+.rec{position:absolute;left:12px;top:12px;display:flex;align-items:center;gap:6px;font:600 11px var(--body);letter-spacing:.08em;z-index:2}
+.rec i{width:8px;height:8px;border-radius:50%;background:#ff3b3b;animation:blink 1.2s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.tc{position:absolute;left:12px;bottom:10px;font:11px var(--body);color:rgba(255,255,255,.75);z-index:2;font-variant-numeric:tabular-nums}
+.up{position:absolute;right:30%;bottom:10px;z-index:3;background:rgba(0,0,0,.55);color:#fff;border:1px solid rgba(255,255,255,.3);
+  font:600 11px var(--body);padding:5px 9px;cursor:pointer;opacity:0;transition:.2s}
+.card:hover .up,.up:focus-visible{opacity:1}
+
+/* info */
+.info{position:relative;z-index:1;padding:28px 30px 26px 12px;display:flex;flex-direction:column;justify-content:center;gap:8px;min-width:0}
+.club{font:600 13px var(--body);color:var(--acc)}
+.name{
+  font-family:var(--display);text-transform:uppercase;line-height:.92;
+  font-size:clamp(40px,5.4vw,68px);word-break:break-word;
+  transition:color .3s,-webkit-text-stroke .3s;
+}
+.name .l{display:block}
+.name .l:nth-child(2){color:transparent;-webkit-text-stroke:1.5px var(--chalk);transition:.3s}
+.card:hover .name .l:nth-child(2){color:var(--acc);-webkit-text-stroke-color:var(--acc)}
+.title{
+  font-family:var(--serif);font-style:italic;font-size:clamp(24px,2.8vw,34px);line-height:1.05;margin-top:6px;
+  background:linear-gradient(90deg,var(--acc),#fff 140%);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.meta{display:flex;gap:18px;margin-top:14px;font-size:13px;color:var(--mute)}
+.meta b{display:block;color:var(--chalk);font:400 26px var(--display);letter-spacing:.02em}
+.empty{grid-column:1/-1;padding:60px 0;text-align:center;color:var(--mute);font-family:var(--serif);font-style:italic;font-size:26px}
+footer{margin-top:64px;color:var(--mute);font-size:13px;max-width:560px;line-height:1.5}
+
+@media (max-width:560px){
+  .card{grid-template-columns:1fr;min-height:0}
+  .shot{height:240px;margin:14px 14px 0 14px;clip-path:polygon(0 0,100% 0,100% 82%,0 100%)}
+  .info{padding:20px 22px 26px}
+  .shot .num{right:8%}
+  .up{right:12px}
+  .count{margin-left:0;width:100%}
+}
+@media (min-width:1700px){html{zoom:1.2}}
+@media (min-width:2300px){html{zoom:1.6}}
+@media (min-width:3000px){html{zoom:2.2}}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+  .card{transform:none!important}
+}
+
+.by{display:inline-flex;align-items:center;gap:10px;padding:6px 18px 6px 6px;color:#f3f1e9;text-decoration:none;border:1px solid #2a2f37;border-radius:40px;background:rgba(255,255,255,.03);transition:.2s}
+.by:hover{border-color:#a855f7;box-shadow:0 0 22px rgba(168,85,247,.35)}
+.by:focus-visible{outline:2px solid #d6ff2e;outline-offset:3px}
+.by .av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#6d28d9,#a855f7);font:400 20px/1 var(--display);box-shadow:0 0 14px rgba(168,85,247,.6)}
+.by b{display:block;font:600 14px/1.1 var(--body)}
+.by small{display:block;font-size:12px;color:#8a8f98}
+.topbar{display:flex;justify-content:flex-end;margin-bottom:28px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="topbar"><a class="by" href="https://www.tiktok.com/@beelzebub372" target="_blank" rel="noopener" aria-label="By A, buka TikTok @beelzebub372"><span class="av" aria-hidden="true">A</span><span><b>By A</b><small>@beelzebub372</small></span></a></div>
+    <h1 class="mega"><span class="outline">Player</span><span class="fill">List</span></h1>
+    <p class="lede">Direktori pemain edisi spesial. Satu kartu, satu cerita, satu momen yang dikenang.</p>
+    <div class="tools">
+      <input class="search" id="q" type="search" placeholder="Cari nama atau julukan" aria-label="Cari pemain">
+      <div id="chips" role="group" aria-label="Filter klub"></div>
+      <span class="count" id="count" aria-live="polite"></span>
+    </div>
+  </header>
+
+  <main class="grid" id="grid"></main>
+
+  <footer>Tambah pemain lewat array <code>PLAYERS</code> di bagian script. Isi <code>photo</code> dengan nama file foto dan <code>url</code> dengan halaman profilnya. Letakkan semua file dalam satu folder.</footer>
+</div>
+
+<script>
+/* ====== EDIT DATA DI SINI ====== */
+const PLAYERS = [
+  { name:"Raphinha", title:"Mr. Championship 25/26", club:"FC Barcelona", num:11, pos:"Winger", goals:109, assists:82, tone:"lime",
+    photo:"raphinha.jpg", video:"assets/raphinha-highlight.mp4", focus:"50% 50%", url:"raphinha.html" }
+  // Tambah pemain baru: salin baris di atas, beri koma, lalu ubah isinya.
+];
+/* ================================ */
+
+const grid = document.getElementById('grid');
+const chipsBox = document.getElementById('chips');
+const countEl = document.getElementById('count');
+const qEl = document.getElementById('q');
+let club = 'Semua';
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const SIL = `<svg class="sil" viewBox="0 0 200 220" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+  <path d="M100 18c-24 0-38 20-38 44 0 20 10 36 24 44-40 10-66 36-70 114h168c-4-78-30-104-70-114 14-8 24-24 24-44 0-24-14-44-38-44z" fill="rgba(0,0,0,.55)"/></svg>`;
+
+function cardHTML(p, i){
+  const parts = p.name.trim().split(/\s+/);
+  const first = parts[0], rest = parts.slice(1).join(' ');
+  const lines = rest ? `<span class="l">${esc(first)}</span><span class="l">${esc(rest)}</span>`
+                     : `<span class="l">${esc(first)}</span>`;
+  const vsrc = p.video ? `<source src="${esc(p.video)}" type="video/mp4"><source src="${esc(p.video.split('/').pop())}" type="video/mp4">` : '';
+  const img = p.video ? `<video autoplay loop muted playsinline preload="auto" poster="${esc(p.photo||'')}" aria-label="Cuplikan ${esc(p.name)}" style="object-position:${esc(p.focus||'50% 50%')}">${vsrc}</video>` : p.photo ? `<img src="${esc(p.photo)}" alt="Foto ${esc(p.name)}" style="object-position:${esc(p.focus||'50% 50%')}">` : SIL;
+  return `
+  <a class="card" href="${esc(p.url||'#')}" aria-label="Buka profil ${esc(p.name)}" data-tone="${p.tone}" data-i="${i}">
+    <div class="shot">
+      ${img}
+      <div class="glow"></div>
+      <span class="num">${p.num}</span>
+      <span class="rec"><i></i>CLIP ${String(i+1).padStart(2,'0')}</span>
+      <span class="tc">00:${String(10+i*7).padStart(2,'0')}:24</span>
+    </div>
+    <div class="info">
+      <span class="club">${esc(p.club)} · ${esc(p.pos)}</span>
+      <h2 class="name">${lines}</h2>
+      <p class="title">${esc(p.title)}</p>
+      <div class="meta"><div><b>${p.goals}</b>Gol</div><div><b>${p.assists}</b>Assist</div><div><b>#${p.num}</b>Nomor</div></div>
+    </div>
+  </a>`;
+}
+
+function render(){
+  const q = qEl.value.trim().toLowerCase();
+  const list = PLAYERS.map((p,i)=>({p,i})).filter(({p}) =>
+    (club==='Semua' || p.club===club) &&
+    (!q || (p.name+' '+p.title).toLowerCase().includes(q)));
+  grid.innerHTML = list.length ? list.map(({p,i})=>cardHTML(p,i)).join('')
+    : `<p class="empty">Tidak ada pemain yang cocok. Coba kata kunci lain.</p>`;
+  countEl.textContent = list.length + ' pemain';
+  applySound();
+}
+
+function renderChips(){
+  const clubs = ['Semua', ...new Set(PLAYERS.map(p=>p.club))];
+  chipsBox.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px';
+  chipsBox.innerHTML = clubs.map(c=>`<button class="chip" aria-pressed="${c===club}" data-c="${esc(c)}">${esc(c)}</button>`).join('');
+}
+
+chipsBox.addEventListener('click', e=>{
+  const b = e.target.closest('.chip'); if(!b) return;
+  club = b.dataset.c; /* video kartu: suara menyala otomatis (kartu yang di-hover, atau kartu pertama) */
+let soundCard = null;
+async function applySound(){
+  const cards = [...grid.querySelectorAll('.card')].filter(c => c.querySelector('video'));
+  if(!cards.length) return;
+  const target = cards.includes(soundCard) ? soundCard : cards[0];
+  for(const c of cards){
+    const v = c.querySelector('video');
+    if(c === target){
+      v.muted = false;
+      try{ await v.play(); }catch(e){ v.muted = true; v.play().catch(()=>{}); }
+    }else{ v.muted = true; v.play().catch(()=>{}); }
+  }
+}
+grid.addEventListener('pointerover', e=>{
+  const c = e.target.closest('.card');
+  if(c && c.querySelector('video') && c !== soundCard){ soundCard = c; applySound(); }
+});
+/* browser hanya mengizinkan suara setelah pengunjung menyentuh halaman */
+['pointerdown','keydown','touchend'].forEach(t => addEventListener(t, () => {
+  const v = grid.querySelector('video'); if(v && v.muted) applySound();
+}, true));
+
+renderChips(); render();
+});
+qEl.addEventListener('input', render);
+
+/* hover: tilt + cursor spotlight */
+const canTilt = matchMedia('(hover:hover)').matches && !matchMedia('(prefers-reduced-motion:reduce)').matches;
+grid.addEventListener('pointermove', e=>{
+  const c = e.target.closest('.card'); if(!c) return;
+  const r = c.getBoundingClientRect();
+  const x = (e.clientX - r.left)/r.width, y = (e.clientY - r.top)/r.height;
+  c.style.setProperty('--mx', (x*100)+'%'); c.style.setProperty('--my', (y*100)+'%');
+  if(canTilt){ c.style.setProperty('--ry', ((x-.5)*7)+'deg'); c.style.setProperty('--rx', ((.5-y)*7)+'deg'); }
+});
+grid.addEventListener('pointerout', e=>{
+  const c = e.target.closest('.card');
+  if(c && !c.contains(e.relatedTarget)){ c.style.setProperty('--rx','0deg'); c.style.setProperty('--ry','0deg'); }
+});
+
+renderChips(); render();
+</script>
+</body>
+</html>
